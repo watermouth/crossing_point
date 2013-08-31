@@ -1,0 +1,13 @@
+*.pdf
+*.o
+*.cma
+*.cmx
+*.cmo
+*.cmi
+*.run
+*.opt
+*.txt
+**/*.omc
+**/*.omakedb
+**/*.omakedb.lock
+**/main
