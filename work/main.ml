@@ -33,7 +33,7 @@ let calc input_file_name record_number =
   done;
   !points 
 
-let calc_by_binary_tree inserter input_file_name record_number = 
+let calc_by_binary_tree inserter searcher input_file_name record_number = 
   let buffer = ref Empty in 
   let in_file = open_in input_file_name in
   let points = ref 0 in
@@ -42,8 +42,11 @@ let calc_by_binary_tree inserter input_file_name record_number =
     let s = (input_line in_file) in
     let x = (int_of_string s) in
     if i = 0 then root_key := x else ();
-    buffer := inserter !buffer x (initial_value_for_insert !buffer !root_key x); 
-    let lesser_count = search !buffer x in  
+    buffer := inserter !buffer x 0; 
+      (* 
+        (initial_value_for_insert !buffer !root_key x); 
+      *)
+    let lesser_count = searcher !buffer x in  
 (*
     Printf.printf "%s:" s;
     Printf.printf "input:%d, insert_at:%d\n" x lesser_count;
@@ -56,7 +59,8 @@ let _ =
   let filename = Sys.argv.(1) in
   let line_number = (int_of_string Sys.argv.(2))in
   let calculator = match Sys.argv.(3) with
-    | "main" -> calc_by_binary_tree insert_with_lesser_count  
+    | "main" -> calc_by_binary_tree insert_left_node_count search_with_sum  
+    | "bug" -> calc_by_binary_tree insert_with_lesser_count search 
     | _ -> calc
   in 
   Printf.printf "%d\n" (calculator filename line_number)
