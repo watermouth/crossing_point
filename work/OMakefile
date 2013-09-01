@@ -62,7 +62,7 @@ NATIVE_ENABLED = $(OCAMLOPT_EXISTS)
 # Build an OCaml program
 #
 
-FILES[] = main
+FILES[] = main tree
 #    file1
 #    file2
 #

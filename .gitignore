@@ -11,3 +11,4 @@
 **/*.omakedb
 **/*.omakedb.lock
 **/main
+*.swp

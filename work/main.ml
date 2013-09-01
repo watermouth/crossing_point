@@ -1,3 +1,5 @@
+open Tree
+
 (* value 値以上の最小の要素のindex 返す *)
 let find_index buffer value min_index max_index =
   (* buffer は昇順にソート済みの配列 *) 
@@ -25,14 +27,31 @@ let calc input_file_name record_number =
     for j=(i+1) downto (insert_at+1) do
       buffer.(j) <- buffer.(j-1) 
     done;
-(*
-*)
     buffer.(insert_at) <- x
+  done;
+  !points 
+
+let calc_by_binary_tree inserter input_file_name record_number = 
+  let buffer = ref Empty in 
+  let in_file = open_in input_file_name in
+  let points = ref 0 in
+  for i=0 to record_number - 1 do
+    let s = (input_line in_file) in
+    let x = (int_of_string s) in
+    buffer := inserter !buffer x 0; 
+    let lesser_count = search !buffer x in  
+    Printf.printf "%s:" s;
+    Printf.printf "input:%d, insert_at:%d\n" x lesser_count;
+    points := !points + (x - 1 - lesser_count);
   done;
   !points 
 
 let _ =
   let filename = Sys.argv.(1) in
   let line_number = (int_of_string Sys.argv.(2))in
-  Printf.printf "%d\n" (calc filename line_number)
+  let calculator = match Sys.argv.(3) with
+    | "main" -> calc_by_binary_tree insert_with_lesser_count  
+    | _ -> calc
+  in 
+  Printf.printf "%d\n" (calculator filename line_number)
 
