@@ -21,8 +21,10 @@ let calc input_file_name record_number =
     let s = (input_line in_file) in
     let x = (int_of_string s) in
     let insert_at = find_index buffer x 0 i in 
+(*
     Printf.printf "%s:" s;
     Printf.printf "input:%d, insert_at:%d\n" x insert_at;
+*)
     points := !points + (x - 1 - insert_at);
     for j=(i+1) downto (insert_at+1) do
       buffer.(j) <- buffer.(j-1) 
@@ -35,13 +37,17 @@ let calc_by_binary_tree inserter input_file_name record_number =
   let buffer = ref Empty in 
   let in_file = open_in input_file_name in
   let points = ref 0 in
+  let root_key = ref 0 in
   for i=0 to record_number - 1 do
     let s = (input_line in_file) in
     let x = (int_of_string s) in
-    buffer := inserter !buffer x 0; 
+    if i = 0 then root_key := x else ();
+    buffer := inserter !buffer x (initial_value_for_insert !buffer !root_key x); 
     let lesser_count = search !buffer x in  
+(*
     Printf.printf "%s:" s;
     Printf.printf "input:%d, insert_at:%d\n" x lesser_count;
+*)
     points := !points + (x - 1 - lesser_count);
   done;
   !points 

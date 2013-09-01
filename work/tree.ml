@@ -30,12 +30,16 @@ let rec count_lesser tree k = match tree with
 
 (* insert しつつ, kより小さいノードの個数をvalueに設定する *)
 let rec insert_with_lesser_count tree k v = match tree with
-    Empty -> Node (Empty, k, v, Empty)
+    Empty -> 
+(*
+    Printf.printf "Node=%d, value=%d\n" k v;
+*)
+    Node (Empty, k, v, Empty)
   | Node (left, key, value, right) ->
     if k = key then Node (left, key, v, right) (* 値を更新した木を返す *) 
     else if k < key 
       then Node ( (insert_with_lesser_count left k v), key, value+1, right)
-      else Node ( left, key, value, (insert_with_lesser_count right k (value+1))) 
+      else Node ( left, key, v, (insert_with_lesser_count right k (v+1))) 
 (* あとで小さいkeyを追加したときにおかしい *)
 
 (* root のvalueを取得する *)
@@ -50,12 +54,15 @@ b := insert_with_lesser_count !b 7 (root_value !b);;
 b := insert_with_lesser_count !b 15 (root_value !b);;
 b := insert_with_lesser_count !b 11 (root_value !b);;
 *)
+let root_key = 10;;
+let initial_value_for_insert tree root_key insert_key =
+  if root_key < insert_key then (root_value tree) else 0 ;;
 
-b := insert_with_lesser_count !b 10 0;;
-b := insert_with_lesser_count !b 7 0;;
-b := insert_with_lesser_count !b 15 0;;
-b := insert_with_lesser_count !b 11 0;;
-b := insert_with_lesser_count !b 5 0;;
+b := insert_with_lesser_count !b 10 (initial_value_for_insert !b root_key 10);; 
+b := insert_with_lesser_count !b 7 (initial_value_for_insert !b root_key 7);; 
+b := insert_with_lesser_count !b 15 (initial_value_for_insert !b root_key 15);; 
+b := insert_with_lesser_count !b 11 (initial_value_for_insert !b root_key 11);; 
+b := insert_with_lesser_count !b 5 (initial_value_for_insert !b root_key 5);; 
 
 let a = ref Empty;;
 a := insert_with_lesser_count !a 3 0;;
@@ -67,3 +74,5 @@ a := insert_with_lesser_count !a 2 0;;
 a := insert_with_lesser_count !a 6 0;;
 a := insert_with_lesser_count !a 8 0;;
 a := insert_with_lesser_count !a 7 0;;
+
+Printf.printf "--- \n";
