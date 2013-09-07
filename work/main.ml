@@ -7,7 +7,7 @@ let find_index buffer value min_index max_index =
     if min_index = max_index then min_index
     else 
       let idx = (min_index + max_index ) / 2 in
-      (* Printf.printf "%d\n" idx; *)
+      (* printf.printf "%d\n" idx; *)
       if value <= buffer.(idx) 
       then sub value min_index idx 
       else sub value (idx+1) max_index 
@@ -43,9 +43,6 @@ let calc_by_binary_tree inserter searcher input_file_name record_number =
     let x = (int_of_string s) in
     if i = 0 then root_key := x else ();
     buffer := inserter !buffer x 0; 
-      (* 
-        (initial_value_for_insert !buffer !root_key x); 
-      *)
     let lesser_count = searcher !buffer x in  
 (*
     Printf.printf "%s:" s;
@@ -61,6 +58,7 @@ let _ =
   let calculator = match Sys.argv.(3) with
     | "main" -> calc_by_binary_tree insert_left_node_count search_with_sum  
     | "bug" -> calc_by_binary_tree insert_with_lesser_count search 
+    | "verify" -> calc
     | _ -> calc
   in 
   Printf.printf "%d\n" (calculator filename line_number)
